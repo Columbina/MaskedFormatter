@@ -1,6 +1,6 @@
 import Foundation
 
-public class MaskedFormatter: Formatter {
+open class MaskedFormatter: Formatter {
     public struct Rule {
         let maskCharacter: Character
         let validation: (Character) -> Bool
@@ -24,7 +24,7 @@ public class MaskedFormatter: Formatter {
         rules.forEach { self.rules[$0.maskCharacter] = $0 }
     }
 
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

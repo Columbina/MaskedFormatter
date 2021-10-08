@@ -121,4 +121,16 @@ final class MaskedFormatterTests: XCTestCase {
         
         XCTAssertEqual(formatter.string(for: input), "12-3")
     }
+    
+    func test_SingleRule_MultipleFormatters() throws {
+        let input = "12"
+
+        let rule = MaskedFormatter.Rule(maskCharacter: "#", validation: { $0.isNumber })
+
+        let formatter1 = MaskedFormatter(mask: "##", rules: [rule])
+        let formatter2 = MaskedFormatter(mask: "#-#", rules: [rule])
+        
+        XCTAssertEqual(formatter1.string(for: input), "12")
+        XCTAssertEqual(formatter2.string(for: input), "1-2")
+    }
 }
