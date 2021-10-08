@@ -1,17 +1,22 @@
 import Foundation
 
-class MaskedFormatter: Formatter {
-    struct Rule {
+public class MaskedFormatter: Formatter {
+    public struct Rule {
         let maskCharacter: Character
         let validation: (Character) -> Bool
+        
+        public init(maskCharacter: Character, validation: @escaping (Character) -> Bool) {
+            self.maskCharacter = maskCharacter
+            self.validation = validation
+        }
     }
 
-    let mask: String
+    private let mask: String
 
     // Save rules by maskedChar so we have O(1) access
-    var rules = [Character: Rule]()
+    private var rules = [Character: Rule]()
 
-    init(mask: String, rules: [Rule]) {
+    public init(mask: String, rules: [Rule]) {
         self.mask = mask
 
         super.init()
@@ -23,20 +28,20 @@ class MaskedFormatter: Formatter {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func string(for obj: Any?) -> String? {
+    override public func string(for obj: Any?) -> String? {
         if let string = obj as? String {
             return formattedAddress(text: string)
         }
         return nil
     }
 
-    override func getObjectValue(_ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String,
-                                 errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
+    override public func getObjectValue(_ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String,
+                                        errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
         obj?.pointee = string as AnyObject?
         return true
     }
 
-    func formattedAddress(text: String?) -> String? {
+    private func formattedAddress(text: String?) -> String? {
         guard let text = text else { return nil }
         let textArray = Array(text)
         let mask = Array(mask)
