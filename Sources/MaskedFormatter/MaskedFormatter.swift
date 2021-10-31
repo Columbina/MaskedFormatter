@@ -44,15 +44,15 @@ open class MaskedFormatter: Formatter {
     private func formattedAddress(text: String?) -> String? {
         guard let text = text else { return nil }
         let textArray = Array(text)
-        let mask = Array(mask)
+        let maskArray = Array(mask)
         var result = ""
 
         var i = 0
         var j = 0
 
-        while i < mask.count && j < text.count {
+        while i < maskArray.count && j < text.count {
             if j >= text.count { break }
-            let maskChar = mask[i]
+            let maskChar = maskArray[i]
             let textChar = textArray[j]
 
             if isValidInput(textChar, for: maskChar) {
